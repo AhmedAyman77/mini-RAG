@@ -16,10 +16,13 @@ data_router = APIRouter(
 
 
 @data_router.post("/upload/{project_id}")
-async def upload_data(project_id: str,
-                      file: UploadFile,
-                      app_settings: Settings = Depends(get_settings)):
-    
+async def upload_data(
+    project_id: str,
+    file: UploadFile,
+    app_settings: Settings = Depends(get_settings)
+    ):
+
+
     data_controller = DataController()
     # validate the file properties
     is_valid, message = data_controller.validate_uploaded_file(file)
@@ -28,13 +31,14 @@ async def upload_data(project_id: str,
         return JSONResponse(
             status_code=status.HTTP_400_BAD_REQUEST,
             content={
-                "validation": is_valid,
                 "signal": message
             }
         )
     
     project_dir_path = ProjectController().get_project_path(project_id=project_id)
-    file_path = data_controller.generate_unique_filename(original_filename=file.filename, project_id=project_id)
+    file_path, file_id = data_controller.generate_unique_filepath(
+        original_filename=file.filename,
+        project_id=project_id)
 
     try:
         async with aiofiles.open(file_path, "wb") as f:
@@ -55,7 +59,7 @@ async def upload_data(project_id: str,
 
     return JSONResponse(
         content={
-            "validation": is_valid,
-            "signal": ResponseSignal.FILE_UPLOAD_SUCCESS.value
+            "signal": ResponseSignal.FILE_UPLOAD_SUCCESS.value,
+            "file_id": file_id,
         }
     )
