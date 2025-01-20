@@ -48,7 +48,8 @@ async def upload_data(
     project_dir_path = ProjectController().get_project_path(project_id=project_id)
     file_path, file_id = data_controller.generate_unique_filepath(
         original_filename=file.filename,
-        project_id=project_id)
+        project_id=project_id
+    )
 
     try:
         async with aiofiles.open(file_path, "wb") as f:
@@ -81,9 +82,9 @@ async def upload_data(
 
 @data_router.post("/process/{project_id}")
 async def process_endpoint(
-    request: Request,
-    project_id: str,
-    process_request: ProcessRequest,
+        request: Request,
+        project_id: str,
+        process_request: ProcessRequest,
     ):
     
     file_id = process_request.file_id

@@ -31,7 +31,7 @@ class ProcessController(BaseController):
             return PyMuPDFLoader(file_path)
 
         return None
-    
+
 
     def get_file_content(self, file_id: str):
         loader =  self.get_file_loader(file_id=file_id)

@@ -21,7 +21,7 @@ $ conda activate mini-rag
 ### (Optional) Setup you command line interface for better readability
 
 ```bash
-export PS1="\[\033[01;32m\]\u@\h:\w\n\[\033[00m\]\$"
+export PS1="\[\033[01;32m\]\u@\h:\w\n\[\033[00m\]\$ "
 ```
 
 ## Installation
@@ -39,6 +39,22 @@ $ cp .env.example .env
 ```
 
 Set your environment variables in the `.env` file. Like `OPENAI_API_KEY` value.
+
+## Run Docker Compose Services
+
+```bash
+$ cd docker
+$ cp .env.example .env
+```
+
+- update `.env` with your credentials
+
+
+
+```bash
+$ cd docker
+$ sudo docker compose up -d
+```
 
 ## Run the FastAPI server
 

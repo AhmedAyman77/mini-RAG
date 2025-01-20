@@ -11,7 +11,8 @@ class ChunkModel(BaseDataModel):
     
 
     async def CreateChunk(self, chunk: DataChunk):
-        result = await self.collection.insert_one(chunk.dict(by_alias=True, exclude_unset=True)) # by_alias=True to use the alias defined in the schema
+        # by_alias=True to use the alias defined in the schema
+        result = await self.collection.insert_one(chunk.dict(by_alias=True, exclude_unset=True))
         chunk._id = result.inserted_id
 
         return chunk
