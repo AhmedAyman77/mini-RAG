@@ -8,14 +8,22 @@ class DataChunk(BaseModel):
     chunk_metadata: dict
     chunk_order: int = Field(..., gt=0)
     chunk_project_id: ObjectId # will be related with _id on project scheme
-
-
-    # @validator('project_id')
-    # def validate_project_id(cls, value):
-    #     if not value.isalnum():
-    #         raise ValueError("project_id must be alphanumeric")
-
-    #     return value
     
     class Config:
-        arbitrary_types_allowed = True # allow the use of types that are not natively supported by Pydantic like "ObjectId"
+        # allow the use of types that are not natively supported by Pydantic like "ObjectId"
+        arbitrary_types_allowed = True
+
+    @classmethod
+    def get_indexes(cls):
+        return [
+            {
+                "key": [
+                    # 1 mean ascending order
+                    # -1 mean descending order
+                    ("chunk_project_id", 1)
+                ],
+                "name": "chunk_project_id_index_1",
+                # maybe more than one chunk has the same chunk_project_id
+                "unique": False
+            }
+        ]

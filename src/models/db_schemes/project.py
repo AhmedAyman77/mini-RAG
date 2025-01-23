@@ -14,4 +14,19 @@ class Project(BaseModel):
         return value
     
     class Config:
-        arbitrary_types_allowed = True # allow the use of types that are not natively supported by Pydantic like "ObjectId"
+        # allow the use of types that are not natively supported by Pydantic like "ObjectId"
+        arbitrary_types_allowed = True
+    
+    @classmethod
+    def get_indexes(cls):
+        return [
+            {
+                "key": [
+                    # 1 mean ascending order
+                    # -1 mean descending order
+                    ("project_id", 1)
+                ],
+                "name": "project_id_index_1",
+                "unique": True
+            },
+        ]
