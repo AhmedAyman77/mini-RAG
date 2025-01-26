@@ -6,7 +6,7 @@ class ProjectModel(BaseDataModel):
 
     def __init__(self, db_client: object):
         super().__init__(db_client)
-        self.collection = self.db_client[DataBaseEnum.COLLECTION_PROJECT_NAME.value]
+    ##### self.collection = self.db_client[DataBaseEnum.COLLECTION_PROJECT_NAME.value]
     
 
     @classmethod
@@ -32,13 +32,12 @@ class ProjectModel(BaseDataModel):
     async def create_project(self, project: Project):
         # by_alias=True to use the alias defined in the schema
         result = await self.collection.insert_one(project.dict(by_alias=True, exclude_unset=True)) 
-        project._id = result.inserted_id
+        project.id = result.inserted_id
 
         return project
     
 
     async def get_project_or_create_one(self, project_id: str):
-
         record = await self.collection.find_one({"project_id": project_id})
 
         if record is None:
@@ -52,7 +51,6 @@ class ProjectModel(BaseDataModel):
     
 
     async def get_all_projects(self, page: int=1, page_size: int=10):
-
         # count total number of documents
         total_num_of_docs = await self.collection.count_documents({})
 
@@ -61,9 +59,11 @@ class ProjectModel(BaseDataModel):
         if total_num_of_docs % page_size != 0:
             num_of_pages += 1
         
+        # only build the query and create a cursor object, so they don't require await.
         cursor = self.collection.find().skip((page-1) * page_size).limit(page_size)
         projects = []
 
+        # The actual database query and retrieval of results occur during iteration
         async for doc in cursor:
             projects.append(
                 Project(**doc)

@@ -8,6 +8,7 @@ class DataChunk(BaseModel):
     chunk_metadata: dict
     chunk_order: int = Field(..., gt=0)
     chunk_project_id: ObjectId # will be related with _id on project scheme
+    chunk_asset_id: ObjectId
     
     class Config:
         # allow the use of types that are not natively supported by Pydantic like "ObjectId"
