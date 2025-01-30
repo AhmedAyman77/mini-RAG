@@ -6,7 +6,7 @@ from bson.objectid import ObjectId
 class AssetModel(BaseDataModel):
     def __init__(self, db_client: object):
         super().__init__(db_client)
-    #### self.collection = self.db_client[DataBaseEnum.COLLECTION_ASSET_NAME.value]
+        self.collection = self.db_client[DataBaseEnum.COLLECTION_ASSET_NAME.value]
 
 
     @classmethod

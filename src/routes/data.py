@@ -6,7 +6,7 @@ from models import ResponseSignal
 import aiofiles
 import os
 import logging
-from schemes.data import ProcessRequest
+from .schemes.data import ProcessRequest
 from models.ProjectModel import ProjectModel
 from models.AssetModel import AssetModel
 from models.ChunkModel import ChunkModel
